@@ -2,6 +2,9 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 function App() {
+  console.log('1111');
+  console.log('222');
+
   return (
     <div className="App">
       <header className="App-header">
