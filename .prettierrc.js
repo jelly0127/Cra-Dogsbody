@@ -6,7 +6,7 @@ module.exports = {
   // 3.是否使用tab来缩进，我们使用空格(useTabs: <bool>)
   useTabs: false,
   // 4.结尾是否添加分号，false的情况下只会在一些导致ASI错误的其工况下在开头加分号，我选择无分号结尾的风格(semi: <bool>)
-  semi: true,
+  semi: false,
   // 5.使用单引号(singleQuote: <bool>)
   singleQuote: true,
   // 6.object对象中key值是否加引号（quoteProps: "<as-needed|consistent|preserve>"）as-needed只有在需求要的情况下加引号，consistent是有一个需要引号就统一加，preserve是保留用户输入的引号
@@ -30,4 +30,4 @@ module.exports = {
   endOfLine: 'auto',
   // 20.embeddedLanguageFormatting: "off",默认是auto,控制被引号包裹的代码是否进行格式化
   embeddedLanguageFormatting: 'off',
-};
+}
