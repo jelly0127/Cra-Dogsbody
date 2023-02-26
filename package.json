@@ -90,7 +90,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx,tsx,ts}": [
       "prettier --write",
-      "git add"
+      "git add ."
     ]
   },
   "config": {
