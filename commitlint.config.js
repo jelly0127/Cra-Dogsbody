@@ -7,4 +7,4 @@ module.exports = {
       ['feat', 'fix', 'docs', 'style', 'test', 'refactor', 'chore', 'revert', 'type'],
     ],
   },
-}
+};

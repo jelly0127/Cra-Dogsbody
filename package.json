@@ -25,7 +25,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint -c .eslintrc.js src --ext .ts,.tsx,.js,.jsx --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commit": "git add . && git-cz"
   },
   "eslintConfig": {
     "extends": [
