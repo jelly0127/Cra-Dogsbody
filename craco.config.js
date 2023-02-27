@@ -28,25 +28,22 @@ module.exports = {
       new SimpleProgressWebpackPlugin(),
 
       // 开发环境
-      ...whenDev(
-        () => [
-          // 模块循环依赖检测插件
-          new CircularDependencyPlugin({
-            // 排除node_modules
-            exclude: /node_modules/,
-            // 包含src
-            include: /src/,
-            failOnError: true,
-            allowAsyncCycles: false,
-            cwd: process.cwd(),
-          }),
-          // 用于观察webpack的打包进程
-          // new DashboardPlugin(),
-          // 热更新
-          new webpack.HotModuleReplacementPlugin(),
-        ],
-        []
-      ),
+      ...whenDev(() => [
+        // 模块循环依赖检测插件
+        new CircularDependencyPlugin({
+          // 排除node_modules
+          exclude: /node_modules/,
+          // 包含src
+          include: /src/,
+          failOnError: true,
+          allowAsyncCycles: false,
+          cwd: process.cwd(),
+        }),
+        // 用于观察webpack的打包进程
+        // new DashboardPlugin(),
+        // 热更新
+        // new webpack.HotModuleReplacementPlugin(),
+      ]),
       // 生产环境
       ...whenProd(
         () => [
@@ -193,5 +190,4 @@ module.exports = {
     port: '3000', // 启动服务器端口号
     open: true, // 是否自动打开浏览器
   },
-  devtool: 'cheap-module-source-map',
 }

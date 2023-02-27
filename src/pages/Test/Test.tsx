@@ -1,13 +1,12 @@
 import reactLogo from '@/logo.svg'
-import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment, incrementByAmount } from '../../redux/counterSlice'
 import CONFIG from '@/config'
 import '@/App.less'
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment, incrementByAmount } from '../../redux/reducer'
 import { Link } from 'react-router-dom'
 import userIcon from '@/images/jelly.jpg'
 export default function Test() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const count = useSelector((state: any) => state.counter.value)
+  const count = useSelector((state: { counter: { value: number } }) => state.counter.value)
   const dispatch = useDispatch()
   return (
     <div className="App">
