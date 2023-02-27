@@ -27,5 +27,11 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 0,
     'prettier/prettier': 'error',
     'react-hooks/rules-of-hooks': 'error', // 检查 Hook 的规则
+    'react/display-name': 'off',
+  },
+  settings: {
+    react: {
+      version: '18.2.0',
+    },
   },
 }
