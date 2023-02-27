@@ -15,7 +15,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', '@typescript-eslint'],
+  plugins: ['react', '@typescript-eslint', 'react-hooks'],
   rules: {
     eqeqeq: 2,
     'no-alert': 2,
@@ -26,5 +26,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-var-requires': 0,
     'prettier/prettier': 'error',
+    'react-hooks/rules-of-hooks': 'error', // 检查 Hook 的规则
+    'react-hooks/exhaustive-deps': 'warn', // 检查 effect 的依赖
   },
 }

@@ -23,6 +23,7 @@
     "dayjs": "^1.11.7",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eventemitter3": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.3",
