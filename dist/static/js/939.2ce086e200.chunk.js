@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkcra_dogsbody=self.webpackChunkcra_dogsbody||[]).push([[939],{5939:function(n,r,u){u.r(r),u.d(r,{default:function(){return t}});u(9867);var e=u(2834);function t(){return(0,e.jsx)(e.Fragment,{})}}}]);
+//# sourceMappingURL=939.2ce086e200.chunk.js.map

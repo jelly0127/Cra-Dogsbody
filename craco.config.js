@@ -19,34 +19,15 @@ module.exports = {
     alias: {
       '@': pathResolve('src'),
     },
-    plugins: [
-      // webpack构建进度条
-      new WebpackBar({
-        profile: true,
-      }),
-      // 查看打包的进度
-      new SimpleProgressWebpackPlugin(),
-
-      // 开发环境
-      ...whenDev(() => [
-        // 模块循环依赖检测插件
-        new CircularDependencyPlugin({
-          // 排除node_modules
-          exclude: /node_modules/,
-          // 包含src
-          include: /src/,
-          failOnError: true,
-          allowAsyncCycles: false,
-          cwd: process.cwd(),
-        }),
-        // 用于观察webpack的打包进程
-        // new DashboardPlugin(),
-        // 热更新
-        // new webpack.HotModuleReplacementPlugin(),
-      ]),
-      // 生产环境
-      ...whenProd(
-        () => [
+    plugins: [],
+    /**
+     * 重写 webpack 任意配置
+     *  - configure 能够重写 webpack 相关的所有配置，但是，仍然推荐你优先阅读 craco 提供的快捷配置，把解决不了的配置放到 configure 里解决；
+     *  - 这里选择配置为函数，与直接定义 configure 对象方式互斥；
+     */
+    configure: (webpackConfig, { env, paths }) => {
+      if (env !== 'development') {
+        webpackConfig.plugins = webpackConfig.plugins.concat(
           new TerserPlugin({
             // sourceMap: true, // Must be set to true if using source-maps in production
             terserOptions: {
@@ -73,36 +54,27 @@ module.exports = {
             threshold: 1024,
             minRatio: 0.8,
           }),
-        ],
-        []
-      ),
-    ],
-    //抽离公用模块
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            chunks: 'initial',
-            minChunks: 2,
-            maxInitialRequests: 5,
-            minSize: 0,
-          },
-          vendor: {
-            test: /node_modules/,
-            chunks: 'initial',
-            name: 'vendor',
-            priority: 10,
-            enforce: true,
-          },
-        },
-      },
-    },
-    /**
-     * 重写 webpack 任意配置
-     *  - configure 能够重写 webpack 相关的所有配置，但是，仍然推荐你优先阅读 craco 提供的快捷配置，把解决不了的配置放到 configure 里解决；
-     *  - 这里选择配置为函数，与直接定义 configure 对象方式互斥；
-     */
-    configure: (webpackConfig, { env, paths }) => {
+          new WebpackBar(),
+          // 查看打包的进度
+          new SimpleProgressWebpackPlugin()
+        )
+      }
+      if (env === 'development') {
+        webpackConfig.plugins = webpackConfig.plugins.concat(
+          // 模块循环依赖检测插件
+          new CircularDependencyPlugin({
+            // 排除node_modules
+            exclude: /node_modules/,
+            // 包含src
+            include: /src/,
+            failOnError: true,
+            allowAsyncCycles: false,
+            cwd: process.cwd(),
+          }),
+          // 热更新
+          new webpack.HotModuleReplacementPlugin()
+        )
+      }
       // 配置扩展扩展名,缩小loader范围
       webpackConfig.resolve.extensions = ['.tsx', '.ts', '.jsx', '.js', '.scss', '.css']
 
@@ -115,9 +87,11 @@ module.exports = {
       webpackConfig.output = {
         ...webpackConfig.output,
         ...{
-          filename: whenDev(() => 'static/js/bundle.js', 'static/js/[name].js'),
-          chunkFilename: 'static/js/[name].js',
+          filename: env !== 'development' ? 'static/js/[name].[contenthash:10].js' : 'static/js/[name].js',
+          chunkFilename:
+            env !== 'development' ? 'static/js/[name].[contenthash:10].chunk.js' : 'static/js/[name].chunk.js',
         },
+        assetModuleFilename: 'static/js/[hash:10][ext][query]',
         path: path.resolve(__dirname, 'dist'), // 修改输出文件目录
         publicPath: '/',
         clean: true,
@@ -137,13 +111,13 @@ module.exports = {
           },
         },
       }
-
+      // 开启持久化缓存
+      webpackConfig.cache.type = 'filesystem'
       // 返回重写后的新配置
       return webpackConfig
     },
   }),
   babel: {
-    presets: [],
     plugins: [
       // AntDesign 按需加载
       [
@@ -163,9 +137,6 @@ module.exports = {
         },
       ],
     ],
-    loaderOptions: (babelLoaderOptions, { env, paths }) => {
-      return babelLoaderOptions
-    },
   },
   /**
    * 新增 craco 提供的 plugin
