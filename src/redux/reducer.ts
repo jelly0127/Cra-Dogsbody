@@ -2,16 +2,20 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const DESKTOP_WIDTH = 768
 export let isDesktop = false
+export const isDark = true
+const isShowWalletBox = false
 if (typeof document !== 'undefined') {
   if (window.innerWidth >= DESKTOP_WIDTH) {
     isDesktop = true
   }
 }
-export const counterSlice = createSlice({
-  name: 'counter',
+export const initSlice = createSlice({
+  name: 'app',
   initialState: {
     value: 0,
     isDesktop,
+    isDark,
+    isShowWalletBox,
   },
   reducers: {
     increment: state => {
@@ -31,10 +35,16 @@ export const counterSlice = createSlice({
     updateDesktop: (state, action) => {
       state.isDesktop = action.payload
     },
+    updateDark: (state, action) => {
+      state.isDark = action.payload
+    },
+    updateShowWalletBox: (state, action) => {
+      state.isShowWalletBox = action.payload
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount, updateDesktop } = counterSlice.actions
+export const { increment, decrement, incrementByAmount, updateDesktop, updateDark } = initSlice.actions
 
-export default counterSlice.reducer
+export default initSlice.reducer

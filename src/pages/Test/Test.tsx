@@ -1,15 +1,16 @@
-import reactLogo from '@/logo.svg'
-import CONFIG from '@/config'
-import '@/App.less'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import reactLogo from '@/images/react.png'
 import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increment, incrementByAmount } from '../../redux/reducer'
+import '../../App.less'
+import CONFIG from '@/config'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import userIcon from '@/images/jelly.jpg'
 import { FC, memo, useCallback, useReducer, useRef, useState } from 'react'
 import { Button } from 'antd'
 import { useMemo } from 'react'
 import Child from './child'
-
 //useReducer
 const initialCount = 0
 function init(initialCount: any) {
@@ -44,19 +45,18 @@ const Test: FC = memo(() => {
     data: 'Test',
   })
   const handleStart = useCallback(() => {
-    console.log('timer.current', timer.current)
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     timer.current == null
       ? (timer.current = setInterval(() => {
           setTime(time => time + 1)
         }, 100))
       : null
-  }, [time])
+  }, [])
 
   const handlePause = useCallback(() => {
     clearInterval(timer.current)
     timer.current = null
-  }, [time])
+  }, [])
 
   const callback = useCallback(() => {
     console.log(counts)
@@ -70,15 +70,18 @@ const Test: FC = memo(() => {
     }
     return sum
   }, [counts])
-
   return (
     <div className="App">
       <div>
+        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
+          <img src="/vite.svg" className="logo" alt="Vite logo" />
+        </a>
         <a href="https://reactjs.org" target="_blank" rel="noreferrer">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Craco + React</h1>
+      <h1>Vite + React</h1>
+
       <h2>Jelly</h2>
       <img src={userIcon} alt="" />
       <br />
@@ -156,4 +159,5 @@ const Test: FC = memo(() => {
     </div>
   )
 })
+Test.displayName = 'Test'
 export default Test

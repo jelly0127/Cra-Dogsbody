@@ -1,39 +1,55 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useRoutes } from 'react-router-dom'
 import routes from './router/routerConfig'
 import { MyContext } from './MyContext'
-import '@/App.less'
+import Header from './components/Header/Header'
+import { GlobalStyle } from './style'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateDesktop } from './redux/counterSlice'
-import { ThemeProvider } from 'styled-components'
-import { defaultTheme, GlobalStyle } from './style'
 import useWindowSize from './hooks/isDesktop'
-import CommunityLinkGroup from './components/CommunityLinkGroup/CommunityLinkGroup'
-
-function App() {
+import { updateDesktop } from '@/redux/reducer'
+import { ThemeProvider } from 'styled-components'
+import { defaultTheme } from './style'
+// import CommunityLinkGroup from './components/CommunityLinkGroup/CommunityLinkGroup'
+import ToastContainer from './components/Toast/ToastContainer'
+import React from 'react'
+import { ConfigProvider } from 'antd'
+import { LoadingProvider } from './components/Loading'
+const App = () => {
   const element = useRoutes(routes)
-  const [Name, setName] = useState('Im jelly')
   const size = useWindowSize()
+  const [Name, setName] = useState('Im jelly')
   const dispatch = useDispatch()
-  const isDesktop = useSelector((state: { counter: { isDesktop: boolean } }) => state.counter.isDesktop)
-  useEffect(() => {
-    dispatch(updateDesktop(size.isDesktop))
-  }, [size.isDesktop])
-  const getTheme = useCallback(() => {
-    console.log(isDesktop)
+  const isDesktop = useSelector((state: { app: { isDesktop: boolean } }) => state.app.isDesktop)
+  const isDark = useSelector((state: { app: { isDark: boolean } }) => state.app.isDark)
 
-    return { ...defaultTheme, isDesktop }
-  }, [isDesktop])
+  useMemo(() => {
+    dispatch(updateDesktop(size.isDesktop))
+  }, [dispatch, size.isDesktop])
+
+  const getTheme = useCallback(() => {
+    return { ...defaultTheme, isDesktop, isDark }
+  }, [isDesktop, isDark])
+
   return (
-    <MyContext.Provider value={{ Name, setName }}>
-      <ThemeProvider theme={getTheme()}>
-        <GlobalStyle />
-        {element}
-        <CommunityLinkGroup />
-      </ThemeProvider>
-    </MyContext.Provider>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#F95997',
+        },
+      }}
+    >
+      <MyContext.Provider value={{ Name, setName }}>
+        <ThemeProvider theme={getTheme()}>
+          <LoadingProvider>
+            <GlobalStyle />
+            <Header />
+            {element}
+            {/* <CommunityLinkGroup /> */}
+            <ToastContainer />
+          </LoadingProvider>
+        </ThemeProvider>
+      </MyContext.Provider>
+    </ConfigProvider>
   )
 }
 
